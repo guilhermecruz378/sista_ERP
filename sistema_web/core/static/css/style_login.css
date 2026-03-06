@@ -1,0 +1,108 @@
+body {
+    background-color: #f4f6f8; /* Cinza gelo de fundo */
+    font-family: 'Roboto', 'Segoe UI', sans-serif;
+}
+
+/* Container Flex para centralizar exatamente no meio da tela */
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 85vh; /* Quase a tela toda */
+}
+
+/* O Card Flutuante */
+.login-card {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 400px; /* Não deixa ficar gigante em telas de PC */
+    border-radius: 12px;
+    padding: 40px 30px;
+    box-shadow: 0 4px 24px rgba(145, 158, 171, 0.15); /* Sombra elegante */
+}
+
+/* Cabeçalho do Login */
+.login-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+.login-header i {
+    font-size: 2.5rem;
+    color: #1a73e8; /* Azul Google */
+    margin-bottom: 10px;
+}
+.login-header h4 {
+    color: #212b36;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+.login-header p {
+    color: #637381;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* Labels e Textos */
+.form-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #637381;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: block;
+}
+
+/* Inputs com foco animado (O mesmo do painel) */
+.form-control {
+    font-size: 0.95rem;
+    padding: 0.6rem 0.8rem; 
+    height: auto; 
+    width: 100%;
+    border-radius: 8px;
+    background-color: #f9fafb;
+    border: 1px solid #dfe3e8;
+    color: #212b36;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-bottom: 20px;
+}
+.form-control:hover {
+    background-color: #f4f6f8;
+}
+.form-control:focus {
+    background-color: #ffffff;
+    border-color: #1a73e8;
+    box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.15); /* Foco Google */
+    outline: none;
+}
+
+/* Botão Principal Arredondado (Pill-shaped) */
+.btn-login {
+    border-radius: 50px; 
+    padding: 10px 20px;
+    font-weight: 600;
+    font-size: 1rem;
+    border: none;
+    background-color: #1a73e8;
+    color: white;
+    width: 100%;
+    transition: all 0.2s ease;
+    margin-top: 10px;
+}
+.btn-login:hover {
+    background-color: #1557b0;
+    box-shadow: 0 6px 12px rgba(26, 115, 232, 0.3);
+    transform: translateY(-1px); /* Levanta 1 pixel ao passar o mouse */
+}
+
+/* Alertas de erro (se a senha estiver errada) */
+.alert-login {
+    border-radius: 6px;
+    font-size: 0.85rem;
+    padding: 10px;
+    background-color: #ffe7e6;
+    color: #ff5630;
+    border: 1px solid #ffbdad;
+    margin-bottom: 20px;
+    text-align: center;
+}

@@ -1,0 +1,357 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/style_form.css' %}">
+
+
+<div class="container-fluid mt-2">
+    
+    <h5 class="mb-2 text-dark fw-bold"><i class="bi bi-box-seam-fill"></i> Cadastro de Produtos</h5>
+  
+    <ul class="nav nav-tabs" id="mainTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link {% if active_tab == 'cadastro' %}active{% endif %}" 
+                    id="cadastro-tab" data-bs-toggle="tab" data-bs-target="#cadastro-pane" 
+                    type="button" role="tab">
+                Cadastro
+            </button>
+        </li>
+
+        <li class="nav-item" role="presentation">
+            <button class="nav-link {% if active_tab == 'busca' %}active{% endif %}" 
+                    id="busca-tab" data-bs-toggle="tab" data-bs-target="#busca-pane" 
+                    type="button" role="tab">
+                Busca
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="mainTabContent">
+        
+        <div class="tab-pane fade {% if active_tab == 'cadastro' %}show active{% endif %}" id="cadastro-pane" role="tabpanel">
+            
+            <form method="post" novalidate>
+                {% csrf_token %}
+                
+                <div class="painel-principal shadow-sm">
+                    <h6 class="text-secondary border-bottom pb-1 mb-2 small">Dados do Cadastro</h6>
+
+                    <div class="row g-2 mb-2">
+
+                        <!-- <div class="col-6 col-lg-1">
+                            <label class="form-label lbl-red">Índice (ID)</label>
+                            {{ form.indice }}
+                        </div> -->
+
+                        <div class="col-6 col-lg-2">
+                            <label class="form-label cor-texto-vermelha">Código de Barra</label>
+                            {{ form.codigodebarra }}
+                        </div>
+                        <div class="col-6 col-lg-2">
+                            <label class="form-label cor-texto-vermelha">Grupo / Familia</label>
+                            <select name="grupo" class="form-select"><option></option> <option>Diversos</option> </select>
+                        </div>
+                        <div class="col-12 col-lg-4">
+                            <label class="form-label cor-texto-vermelha">Descrição do Produto</label>
+                            {{ form.descricao }}
+                        </div>
+                        <div class="col-4 col-lg-1">
+                            <label class="form-label cor-texto-vermelha">Unid.</label>
+                            <select name="unid" class="form-select">
+                                <option> </option>
+                                <option>UN</option>
+                                <option>KG</option>
+                                <option>MT</option>
+                            </select>
+                            <!--<input type="text" class="form-control text-center bg-white" value="UN" readonly>-->
+                        </div>
+                        <div class="col-4 col-lg-1">
+                            <label class="form-label cor-texto-vermelha">Custo</label>
+                            {{ form.precocusto }}
+                        </div>
+                        <div class="col-4 col-lg-1">
+                            <label class="form-label cor-texto-vermelha">Lucro %</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="col-12 col-lg-1">
+                            <label class="form-label fw-bold cor-texto-vermelha ">Preço Venda</label>
+                            {{ form.precovenda }}
+                            
+                        </div>
+                    </div>
+
+                    <div class="row g-2 mb-2">
+                        <div class="col-6 col-lg-1">
+                            <label class="form-label">Lucro Real</label>
+                            <input type="text" class="form-control" disabled>
+                        </div>
+                        <div class="col-6 col-lg-1">
+                            <label class="form-label">Preço Venda 2</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="col-6 col-lg-1">
+                            <label class="form-label cor-texto-vermelha">Aliquota</label>
+                            <select class="form-select">
+                                <option> </option>
+                                <option>18%</option>
+                            </select>
+                        </div>
+                        <div class="col-6 col-lg-1">
+                            <label class="form-label">Cod</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="col-6 col-lg-1">
+                            <label class="form-label cor-texto-vermelha">Comissão</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="col-6 col-lg-1">
+                            <label class="form-label cor-texto-vermelha">Estoque Atual</label>
+                            {{ form.estoqueatual }}
+                        </div>
+                        <div class="col-6 col-lg-1">
+                            <label class="form-label cor-texto-vermelha">Est. Mínimo</label>
+                            {{ form.estoqueminimo }}
+                        </div>
+                        <div class="col-12 col-lg-2">
+                            <label class="form-label cor-texto-vermelha">NCM / Class. Fiscal</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control">
+                                <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-1">
+                            <label class="form-label">CST</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="col-6 col-lg-2">
+                            <label class="form-label">Excessão</label>
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="row g-2 mb-3">
+                        <div class="col-6 col-lg-1">
+                            <label class="form-label lbl-red">Vlr.IBPT</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="col-6 col-lg-2">
+                            <label class="form-label">Validade</label>
+                            {{ form.validade }}
+                        </div>
+                        <div class="col-6 col-lg-1">
+                            <label class="form-label">IPI</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="col-6 col-lg-1">
+                            <label class="form-label lbl-red">C.F.O.P.</label>
+                            <input type="text" class="form-control text-danger fw-bold" value="5405">
+                        </div>
+                        <div class="col-6 col-lg-1">
+                            <label class="form-label">Índice Depto</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="col-6 col-lg-2">
+                            <label class="form-label">Custo Médio</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="col-12 col-lg-4 d-flex align-items-end gap-2 justify-content-end">
+                            <button type="button" class="btn btn-secondary btn-sm flex-fill">Tributação 1</button>
+                            <button type="button" class="btn btn-secondary btn-sm flex-fill">Tributação 2</button>
+                        </div>
+                    </div>
+
+                    <div class="row g-2 mb-3">
+                        
+                        <div class="col-12 col-md-4">
+                            <div class="box-tributo shadow-sm">
+                                <div class="box-title">Dados Fiscais 1</div>
+                                <div class="row g-1">
+                                    <div class="col-12"><label class="form-label">Inf. Adicional</label><input type="text" class="form-control"></div>
+                                    <div class="col-12"><label class="form-label">Origem Produto</label><select class="form-select"><option>0 - Nacional</option></select></div>
+                                    <div class="col-6"><label class="form-label lbl-red">CST ICMS</label><input type="text" class="form-control"></div>
+                                    <div class="col-6"><label class="form-label">Cod. ISS</label><input type="text" class="form-control"></div>
+                                    <div class="col-6"><label class="form-label">Cód. IBGE</label><input type="text" class="form-control"></div>
+                                    <div class="col-6"><label class="form-label lbl-red">CSOSN</label><input type="text" class="form-control"></div>
+                                    <div class="col-12"><label class="form-label">Nat. Oper. ISS</label><input type="text" class="form-control"></div>
+                                    <div class="col-6"><label class="form-label">Vlr Base Calc</label><input type="text" class="form-control"></div>
+                                    <div class="col-6"><label class="form-label">Vlr ICMS Retido</label><input type="text" class="form-control"></div>
+                                    <div class="col-12"><label class="form-label">Modalidade Base</label><select class="form-select"><option>MVA</option></select></div>
+                                    <div class="col-4"><label class="form-label">% Redução</label><input type="text" class="form-control"></div>
+                                    <div class="col-8"><label class="form-label">Mod. BC ICMS ST</label><select class="form-select"><option>Tabelado</option></select></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-4">
+                            <div class="box-tributo shadow-sm">
+                                <div class="box-title">ICMS / Cálculos</div>
+                                <div class="row g-1">
+                                    <div class="col-6"><label class="form-label">% Margem ICMS</label><input type="text" class="form-control"></div>
+                                    <div class="col-6"><label class="form-label">% BC ICMS</label><input type="text" class="form-control"></div>
+                                    <div class="col-6"><label class="form-label">Vlr Redução BC</label><input type="text" class="form-control"></div>
+                                    <div class="col-6"><label class="form-label">Vlr Aliq ICMS</label><input type="text" class="form-control"></div>
+                                    <div class="col-6"><label class="form-label">Valor ICMS</label><input type="text" class="form-control"></div>
+                                    <div class="col-6"><label class="form-label">Vlr Desonerado</label><input type="text" class="form-control"></div>
+                                    <div class="col-12"><label class="form-label">Motivo Deson.</label><select class="form-select"><option>--</option></select></div>
+                                    <div class="col-6"><label class="form-label">Vlr Crédito</label><input type="text" class="form-control"></div>
+                                    <div class="col-6"><label class="form-label">Aliq. Crédito</label><input type="text" class="form-control"></div>
+                                    <div class="col-12"><label class="form-label fw-bold">Total Tributos</label><input type="text" class="form-control bg-light"></div>
+                                    <div class="col-6"><label class="form-label lbl-red">CST PIS</label><input type="text" class="form-control"></div>
+                                    <div class="col-6"><label class="form-label">Item Serviço</label><input type="text" class="form-control"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-4">
+                            <div class="box-tributo shadow-sm">
+                                <div class="box-title">PIS / COFINS</div>
+                                <div class="row g-1">
+                                    <div class="col-4"><label class="form-label">Base PIS</label><input type="text" class="form-control"></div>
+                                    <div class="col-4"><label class="form-label">Aliq PIS</label><input type="text" class="form-control"></div>
+                                    <div class="col-4"><label class="form-label">Vlr PIS</label><input type="text" class="form-control"></div>
+                                    
+                                    <div class="col-6"><label class="form-label">Qtd Vend PIS</label><input type="text" class="form-control"></div>
+                                    <div class="col-6"><label class="form-label">Vlr Aliq PIS</label><input type="text" class="form-control"></div>
+                                    
+                                    <div class="col-12 mt-1 border-top pt-1"><label class="form-label lbl-red">CST COFINS</label><input type="text" class="form-control"></div>
+                                    
+                                    <div class="col-4"><label class="form-label">Base COF</label><input type="text" class="form-control"></div>
+                                    <div class="col-4"><label class="form-label">Aliq COF</label><input type="text" class="form-control"></div>
+                                    <div class="col-4"><label class="form-label">Vlr COF</label><input type="text" class="form-control"></div>
+                                    
+                                    <div class="col-6"><label class="form-label">Qtd Vend COF</label><input type="text" class="form-control"></div>
+                                    <div class="col-6"><label class="form-label">Vlr Aliq COF</label><input type="text" class="form-control"></div>
+                                    
+                                    <div class="col-12 mt-1"><label class="form-label">Incentivo</label><select class="form-select"><option>Não</option></select></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid-container table-responsive">
+                        <table class="table table-bordered table-sm mb-0 table-striped">
+                            <thead class="grid-header">
+                                <tr>
+                                    <th>CODIGODEBARRA</th>
+                                    <th>GRUPO</th>
+                                    <th>DESCRICAO</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for prod in produtos %}
+                                <tr><td>{{ prod.codigodebarra }}</td><td>{{ prod.grupo }}</td><td>{{ prod.descricao }}</td></tr>
+                                {% empty %}
+                                <tr><td>&nbsp;</td><td></td><td></td></tr>
+                                <tr><td>&nbsp;</td><td></td><td></td></tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="spacer-bottom"></div>
+                </div>
+
+                <div class="toolbar-footer">
+                    <button type="button" class="btn btn-light btn-sm border" id="btn-magic-fill" onclick="preencherAutomaticamente()">
+                        <i class="bi bi-plus-circle-fill text-success"></i> Novo 
+                    </button>
+                 
+                    <button type="button" class="btn btn-light btn-sm border" onclick="limparFormulario()" title="Limpar tela">
+                        <i class="bi bi-x-circle-fill text-danger"></i> Cancelar
+                    </button>
+                
+                    <button type="submit" class="btn btn-light btn-sm border fw-bold">
+                        <i class="bi bi-floppy-fill text-primary"></i> Salvar
+                    </button>
+
+                    <button type="button" class="btn btn-light btn-sm border" onclick="limparFormulario()" title="Limpar tela" >
+                        <i class="bi bi-trash-fill text-danger"></i> Excluir
+                    </button>
+
+                    <button type="button" class="btn btn-light btn-sm border">
+                        <i class="bi bi-pencil-fill text-warning"></i> Editar
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="tab-pane fade {% if active_tab == 'busca' %}show active{% endif %}" id="busca-pane" role="tabpanel">
+            <div class="painel-principal shadow-sm mt-0 border-top-0">
+                
+                <form method="get" class="mb-3 p-3 bg-white rounded border">
+                    <div class="row align-items-center g-2">
+                        <div class="col-12 col-md-3 border-end">
+                            <span class="fw-bold d-block mb-1 text-secondary small">Filtrar:</span>
+                            <div class="d-flex gap-3 d-md-block">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="tipo_busca" id="radioDesc" value="descricao" {% if request.GET.tipo_busca != 'codigo' %}checked{% endif %}>
+                                    <label class="form-check-label small" for="radioDesc">Descrição</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="tipo_busca" id="radioCod" value="codigo" {% if request.GET.tipo_busca == 'codigo' %}checked{% endif %}>
+                                    <label class="form-check-label small" for="radioCod">Cód. Barra</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <label class="form-label text-muted small">Digite sua busca:</label>
+                            <div class="input-group">
+                                <input type="text" name="q" class="form-control" placeholder="Busque por nome ou código..." value="{{ request.GET.q|default:'' }}">
+                                <button type="submit" class="btn btn-primary btn-sm px-4">🔍 Pesquisar</button>
+                                {% if request.GET.q %}
+                                    <a href="{% url 'cadastro' %}?tab=busca" class="btn btn-outline-secondary btn-sm">Limpar</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                
+                <h6 class="text-secondary ms-1 mb-2 small fw-bold">
+                    {% if request.GET.q %}
+                        <i class="bi bi-search"></i> Resultados da pesquisa:
+                    {% else %}
+                        <i class="bi bi-clock-history"></i> Últimos cadastros realizados:
+                    {% endif %}
+                </h6>
+
+                {% if produtos %}
+                <div class="grid-container table-responsive" style="height: 400px;">
+                    <table class="table table-bordered table-hover table-sm mb-0">
+                        <thead class="grid-header">
+                            <tr>
+                                <th>CÓDIGO</th>
+                                <th>DESCRIÇÃO</th>
+                                <th>PREÇO</th>
+                                <th>ESTOQUE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for prod in produtos %}
+                            <tr>
+                                <td>{{ prod.codigodebarra }}</td>
+                                <td>{{ prod.descricao }}</td>
+                                <td>R$ {{ prod.precovenda }}</td>
+                                <td>{{ prod.estoqueatual }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                    <div class="alert alert-warning text-center small mt-3">
+                        Nenhum produto encontrado no banco de dados.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+    </div> 
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+<script src="{% static 'js/scripts.js' %}"></script>
+
+
+{% endblock %}
