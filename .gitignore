@@ -1,3 +1,5 @@
 .env
 requeriments_global.txt
 requeriments.txt
+dashboard
+venv
