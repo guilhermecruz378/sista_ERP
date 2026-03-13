@@ -1,0 +1,112 @@
+
+body {
+    background-color: #f4f6f8;
+    color: #333;
+    overflow-x: hidden;
+}
+
+/* Abas */
+.nav-tabs { border-bottom: 2px solid #e0e0e0; margin-bottom: 20px; }
+.nav-tabs .nav-link {
+    color: #637381; font-weight: 600; font-size: 1rem; 
+    padding: 12px 24px; border: none; border-bottom: 2px solid transparent; transition: 0.3s;
+    cursor: pointer;
+}
+.nav-tabs .nav-link:hover { color: #212b36; }
+.nav-tabs .nav-link.active { color: #1a73e8; background-color: transparent; border-bottom: 2px solid #1a73e8; }
+
+/* Cards e Seções */
+.section-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(145, 158, 171, 0.1);
+    margin-bottom: 20px;
+}
+.section-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #212b36;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid #f4f6f8;
+    padding-bottom: 10px;
+}
+.section-title i { color: #1a73e8; }
+
+/* Inputs */
+.form-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #454f5b;
+    display: block;
+}
+.lbl-red { color: #d32f2f !important; }
+
+.form-control, .form-select, .input-group-text {
+    font-size: 0.95rem;
+    padding: 0.5rem 0.8rem;
+    border-radius: 8px;
+    background-color: #f9fafb;
+    border: 1px solid #dfe3e8;
+    color: #212b36;
+    transition: all 0.2s;
+}
+.form-control:focus, .form-select:focus {
+    background-color: #ffffff;
+    border-color: #1a73e8;
+    box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.15);
+    outline: none;
+}
+
+/* Acordeon para Tributos Avançados */
+.accordion-button {
+    font-weight: 600;
+    color: #454f5b;
+    background-color: #f4f6f8;
+    border-radius: 8px !important;
+    border: 1px solid #dfe3e8;
+}
+.accordion-button:not(.collapsed) {
+    color: #1a73e8;
+    background-color: #e8f0fe;
+    box-shadow: none;
+}
+.accordion-item { border: none; }
+.accordion-body { border: 1px solid #dfe3e8; border-top: none; border-radius: 0 0 8px 8px; }
+
+/* Tabela da Busca */
+.grid-container {
+    border: 1px solid #dfe3e8;
+    height: 350px;
+    overflow-y: auto;
+    border-radius: 8px;
+    background-color: #fff;
+}
+.grid-header { position: sticky; top: 0; background-color: #f9fafb; z-index: 10; font-weight: bold; border-bottom: 2px solid #dfe3e8; }
+
+/* Rodapé e Botões */
+.toolbar-footer {
+    background-color: #ffffff;
+    border-top: 1px solid #e0e0e0;
+    padding: 15px 24px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1050;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    box-shadow: 0 -4px 20px rgba(145, 158, 171, 0.1);
+}
+.toolbar-footer .btn {
+    border-radius: 50px;
+    padding: 8px 24px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+.spacer-bottom { height: 100px; }

@@ -1,0 +1,21 @@
+.welcome-card {
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(145, 158, 171, 0.1);
+    padding: 60px 20px;
+    text-align: center;
+    margin-top: 40px;
+    border: 1px solid #e0e0e0;
+}
+.welcome-icon {
+    font-size: 3.5rem;
+    color: #1a73e8;
+    background-color: #e8f0fe;
+    width: 100px;
+    height: 100px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}

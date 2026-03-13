@@ -1,0 +1,217 @@
+body {
+        background-color: #f4f6f8;
+        font-family: 'Roboto', 'Segoe UI', sans-serif;
+        overflow-x: hidden;
+}
+
+/* --- MENU LATERAL (SIDEBAR) --- */
+.sidebar {
+        width: 260px;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: #ffffff;
+        box-shadow: 2px 0 12px rgba(145, 158, 171, 0.15);
+        z-index: 1040;
+        padding-top: 20px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        white-space: nowrap; /* Evita quebra de texto ao encolher */
+}
+
+/* Botão Flutuante de Encolher no PC */
+.desktop-toggle {
+        position: absolute;
+        top: 25px;
+        right: -15px; /* Fica metade para fora da barra */
+        background: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 6px rgba(26, 115, 232, 0.4);
+        z-index: 1050;
+        transition: transform 0.3s ease;
+}
+.desktop-toggle:hover {
+        transform: scale(1.1);
+}
+
+/* === EFEITOS DE QUANDO A BARRA ESTÁ ENCOLHIDA === */
+.sidebar.collapsed {
+        width: 80px; /* Fica fininha */
+}
+.sidebar.collapsed .desktop-toggle {
+        transform: rotate(180deg); /* Vira a setinha para a direita */
+}
+.sidebar.collapsed .nav-text {
+        display: none; /* Esconde os textos usando a nova classe nav-text */
+}
+.sidebar.collapsed .sidebar-brand {
+        font-size: 1.5rem;
+        margin-bottom: 30px;
+}
+.sidebar.collapsed .nav-sidebar .nav-link {
+        text-align: center;
+        padding: 12px 0;
+        margin: 4px 10px;
+}
+.sidebar.collapsed .nav-sidebar i {
+        margin-right: 0;
+        font-size: 1.4rem;
+}
+
+.sidebar-brand {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #1a73e8;
+        text-align: center;
+        margin-bottom: 30px;
+        display: block;
+        text-decoration: none;
+        transition: 0.3s;
+}
+
+/* Títulos das Categorias do Menu */
+.sidebar-heading {
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: #919eab;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        padding: 10px 20px 5px 20px;
+        display: block;
+}
+/* Quando a barra encolhe, escondemos o título da categoria */
+.sidebar.collapsed .sidebar-heading {
+        display: none; 
+}
+
+.nav-sidebar .nav-link {
+        color: #637381;
+        font-weight: 600;
+        padding: 12px 20px;
+        margin: 4px 15px;
+        border-radius: 8px;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+}
+
+.nav-sidebar .nav-link:hover {
+        background-color: #f4f6f8;
+        color: #212b36;
+}
+
+.nav-sidebar .nav-link.active {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+}
+
+.nav-sidebar i { margin-right: 12px; font-size: 1.1rem; }
+
+/* --- ACORDEON DO MENU LATERAL --- */
+.nav-item {
+        width: 100%;
+}
+.nav-sidebar .nav-link {
+        display: flex;
+        align-items: center;
+        justify-content: space-between; /* Empurra a setinha para a direita */
+        cursor: pointer;
+}
+.nav-sidebar .nav-link .menu-left {
+        display: flex;
+        align-items: center;
+}
+
+/* Setinha animada */
+.chevron-icon {
+        font-size: 0.8rem !important;
+        transition: transform 0.3s ease;
+        margin-right: 0 !important;
+}
+/* Gira a setinha quando o menu está aberto */
+.nav-link:not(.collapsed) .chevron-icon {
+        transform: rotate(180deg);
+}
+
+/* Submenus (Itens filhos) */
+.submenu {
+        background-color: #f8fafc; /* Fundo levemente diferenciado para filhos */
+        border-radius: 8px;
+        margin: 0 15px 5px 15px;
+        overflow: hidden;
+}
+.submenu .nav-link {
+        padding: 8px 15px 8px 40px; /* Mais recuo para mostrar hierarquia */
+        margin: 2px 0;
+        font-size: 0.9rem;
+        color: #637381;
+        border-radius: 0;
+}
+.submenu .nav-link:hover {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+}
+
+/* Esconde a setinha quando a barra principal encolher pro PC */
+.sidebar.collapsed .chevron-icon {
+        display: none;
+}
+.sidebar.collapsed .submenu .nav-link {
+        padding-left: 0;
+        justify-content: center;
+}
+
+/* --- ÁREA PRINCIPAL --- */
+.main-content {
+        margin-left: 260px; /* Espaço da sidebar aberta */
+        padding: 20px;
+        min-height: 100vh;
+        transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Quando o menu encolhe, a área principal expande preenchendo o vazio */
+.main-content.expanded {
+        margin-left: 80px; 
+}
+
+.mobile-header {
+        display: none;
+        background-color: #ffffff;
+        box-shadow: 0 2px 8px rgba(145, 158, 171, 0.1);
+        padding: 10px 20px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        align-items: center;
+        justify-content: space-between;
+}
+
+/* --- RESPONSIVIDADE (CELULARES E TABLETS) --- */
+@media (max-width: 991.98px) {
+        .desktop-toggle { display: none; } /* Esconde o botão de PC no celular */
+        .sidebar {
+        transform: translateX(-100%);
+        }
+        .sidebar.show {
+        transform: translateX(0);
+        }
+        .main-content {
+        margin-left: 0 !important;
+        padding: 10px;
+        }
+        .mobile-header {
+        display: flex;
+        }
+        .sidebar-overlay {
+        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+        background: rgba(0,0,0,0.5); z-index: 1030; display: none;
+        }
+        .sidebar-overlay.show { display: block; }
+}
