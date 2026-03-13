@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=C:\Users\guilh\OneDrive\Área de Trabalho\davi_igreja\venv
+set VIRTUAL_ENV=C:\Users\guilh\OneDrive\Área de Trabalho\subir_para_o_git\sista_ERP\venv
 
 if not defined PROMPT set PROMPT=$P$G
 
