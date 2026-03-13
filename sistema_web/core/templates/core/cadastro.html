@@ -1,27 +1,143 @@
 {% extends 'core/base.html' %}
-{% load static %}
+
 {% block content %}
-<link rel="stylesheet" href="{% static 'css/style_form.css' %}">
+<style>
+    /* === TEMA: ENTERPRISE ESPAÇOSO E CLEAN === */
+    body {
+        background-color: #f4f6f8;
+        color: #333;
+        overflow-x: hidden;
+    }
 
+    /* Abas */
+    .nav-tabs { border-bottom: 2px solid #e0e0e0; margin-bottom: 20px; }
+    .nav-tabs .nav-link {
+        color: #637381; font-weight: 600; font-size: 1rem; 
+        padding: 12px 24px; border: none; border-bottom: 2px solid transparent; transition: 0.3s;
+        cursor: pointer;
+    }
+    .nav-tabs .nav-link:hover { color: #212b36; }
+    .nav-tabs .nav-link.active { color: #1a73e8; background-color: transparent; border-bottom: 2px solid #1a73e8; }
 
-<div class="container-fluid mt-2">
+    /* Cards e Seções */
+    .section-card {
+        background-color: #ffffff;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 4px 20px rgba(145, 158, 171, 0.1);
+        margin-bottom: 20px;
+    }
+    .section-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #212b36;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border-bottom: 1px solid #f4f6f8;
+        padding-bottom: 10px;
+    }
+    .section-title i { color: #1a73e8; }
+
+    /* Inputs */
+    .form-label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: #454f5b;
+        display: block;
+    }
+    .lbl-red { color: #d32f2f !important; }
+
+    .form-control, .form-select, .input-group-text {
+        font-size: 0.95rem;
+        padding: 0.5rem 0.8rem;
+        border-radius: 8px;
+        background-color: #f9fafb;
+        border: 1px solid #dfe3e8;
+        color: #212b36;
+        transition: all 0.2s;
+    }
+    .form-control:focus, .form-select:focus {
+        background-color: #ffffff;
+        border-color: #1a73e8;
+        box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.15);
+        outline: none;
+    }
     
-    <h5 class="mb-2 text-dark fw-bold"><i class="bi bi-box-seam-fill"></i> Cadastro de Produtos</h5>
-  
+    /* Acordeon para Tributos Avançados */
+    .accordion-button {
+        font-weight: 600;
+        color: #454f5b;
+        background-color: #f4f6f8;
+        border-radius: 8px !important;
+        border: 1px solid #dfe3e8;
+    }
+    .accordion-button:not(.collapsed) {
+        color: #1a73e8;
+        background-color: #e8f0fe;
+        box-shadow: none;
+    }
+    .accordion-item { border: none; }
+    .accordion-body { border: 1px solid #dfe3e8; border-top: none; border-radius: 0 0 8px 8px; }
+
+    /* Tabela da Busca */
+    .grid-container {
+        border: 1px solid #dfe3e8;
+        height: 350px;
+        overflow-y: auto;
+        border-radius: 8px;
+        background-color: #fff;
+    }
+    .grid-header { position: sticky; top: 0; background-color: #f9fafb; z-index: 10; font-weight: bold; border-bottom: 2px solid #dfe3e8; }
+
+    /* Rodapé e Botões */
+    .toolbar-footer {
+        background-color: #ffffff;
+        border-top: 1px solid #e0e0e0;
+        padding: 15px 24px;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1050;
+        display: flex;
+        justify-content: flex-end;
+        gap: 15px;
+        box-shadow: 0 -4px 20px rgba(145, 158, 171, 0.1);
+    }
+    .toolbar-footer .btn {
+        border-radius: 50px;
+        padding: 8px 24px;
+        font-weight: 600;
+        transition: 0.2s;
+    }
+    .spacer-bottom { height: 100px; }
+</style>
+
+<div class="container-fluid mt-3">
+    
+    <h4 class="mb-4 text-dark fw-bold"><i class="bi bi-box-seam-fill text-primary"></i> Gestão de Produtos</h4>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %} alert-dismissible fade show shadow-sm" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
     <ul class="nav nav-tabs" id="mainTab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link {% if active_tab == 'cadastro' %}active{% endif %}" 
-                    id="cadastro-tab" data-bs-toggle="tab" data-bs-target="#cadastro-pane" 
-                    type="button" role="tab">
-                Cadastro
+            <button class="nav-link {% if active_tab == 'cadastro' %}active{% endif %}" id="cadastro-tab" data-bs-toggle="tab" data-bs-target="#cadastro-pane" type="button" role="tab">
+                <i class="bi bi-plus-circle"></i> Cadastro
             </button>
         </li>
-
         <li class="nav-item" role="presentation">
-            <button class="nav-link {% if active_tab == 'busca' %}active{% endif %}" 
-                    id="busca-tab" data-bs-toggle="tab" data-bs-target="#busca-pane" 
-                    type="button" role="tab">
-                Busca
+            <button class="nav-link {% if active_tab == 'busca' %}active{% endif %}" id="busca-tab" data-bs-toggle="tab" data-bs-target="#busca-pane" type="button" role="tab">
+                <i class="bi bi-search"></i> Busca
             </button>
         </li>
     </ul>
@@ -29,329 +145,311 @@
     <div class="tab-content" id="mainTabContent">
         
         <div class="tab-pane fade {% if active_tab == 'cadastro' %}show active{% endif %}" id="cadastro-pane" role="tabpanel">
-            
             <form method="post" novalidate>
                 {% csrf_token %}
                 
-                <div class="painel-principal shadow-sm">
-                    <h6 class="text-secondary border-bottom pb-1 mb-2 small">Dados do Cadastro</h6>
-
-                    <div class="row g-2 mb-2">
-
-                        <!-- <div class="col-6 col-lg-1">
-                            <label class="form-label lbl-red">Índice (ID)</label>
-                            {{ form.indice }}
-                        </div> -->
-
-                        <div class="col-6 col-lg-2">
-                            <label class="form-label cor-texto-vermelha">Código de Barra</label>
+                <div class="section-card">
+                    <div class="section-title"><i class="bi bi-info-circle"></i> Informações Básicas</div>
+                    <div class="row g-3">
+                        <div class="col-12 col-md-3">
+                            <label class="form-label">Código de Barra</label>
                             {{ form.codigodebarra }}
                         </div>
-                        <div class="col-6 col-lg-2">
-                            <label class="form-label cor-texto-vermelha">Grupo / Familia</label>
-                            <select name="grupo" class="form-select"><option></option> <option>Diversos</option> </select>
+                        <div class="col-12 col-md-3">
+                            <label class="form-label">Grupo / Familia</label>
+                            <select name="grupo" class="form-select"><option> </option><option>Diversos</option></select>
                         </div>
-                        <div class="col-12 col-lg-4">
-                            <label class="form-label cor-texto-vermelha">Descrição do Produto</label>
+                        <div class="col-12 col-md-4">
+                            <label class="form-label">Descrição do Produto</label>
                             {{ form.descricao }}
                         </div>
-                        <div class="col-4 col-lg-1">
-                            <label class="form-label cor-texto-vermelha">Unid.</label>
-                            <select name="unid" class="form-select">
-                                <option> </option>
+                        <div class="col-12 col-md-2">
+                            <label class="form-label">Unid. Medida</label>
+                            <select name="grupo" class="form-select">
+                                <option>UN</option>
                                 <option>UN</option>
                                 <option>KG</option>
                                 <option>MT</option>
                             </select>
-                            <!--<input type="text" class="form-control text-center bg-white" value="UN" readonly>-->
-                        </div>
-                        <div class="col-4 col-lg-1">
-                            <label class="form-label cor-texto-vermelha">Custo</label>
-                            {{ form.precocusto }}
-                        </div>
-                        <div class="col-4 col-lg-1">
-                            <label class="form-label cor-texto-vermelha">Lucro %</label>
-                            <input type="text" class="form-control">
-                        </div>
-                        <div class="col-12 col-lg-1">
-                            <label class="form-label fw-bold cor-texto-vermelha ">Preço Venda</label>
-                            {{ form.precovenda }}
-                            
+                            <!-- <input type="text" class="form-control text-center" value="UN" readonly> -->
                         </div>
                     </div>
-
-                    <div class="row g-2 mb-2">
-                        <div class="col-6 col-lg-1">
-                            <label class="form-label">Lucro Real</label>
-                            <input type="text" class="form-control" disabled>
-                        </div>
-                        <div class="col-6 col-lg-1">
-                            <label class="form-label">Preço Venda 2</label>
-                            <input type="text" class="form-control">
-                        </div>
-                        <div class="col-6 col-lg-1">
-                            <label class="form-label cor-texto-vermelha">Aliquota</label>
-                            <select class="form-select">
-                                <option> </option>
-                                <option>18%</option>
-                            </select>
-                        </div>
-                        <div class="col-6 col-lg-1">
-                            <label class="form-label">Cod</label>
-                            <input type="text" class="form-control">
-                        </div>
-                        <div class="col-6 col-lg-1">
-                            <label class="form-label cor-texto-vermelha">Comissão</label>
-                            <input type="text" class="form-control">
-                        </div>
-                        <div class="col-6 col-lg-1">
-                            <label class="form-label cor-texto-vermelha">Estoque Atual</label>
-                            {{ form.estoqueatual }}
-                        </div>
-                        <div class="col-6 col-lg-1">
-                            <label class="form-label cor-texto-vermelha">Est. Mínimo</label>
-                            {{ form.estoqueminimo }}
-                        </div>
-                        <div class="col-12 col-lg-2">
-                            <label class="form-label cor-texto-vermelha">NCM / Class. Fiscal</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control">
-                                <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
-                            </div>
-                        </div>
-                        <div class="col-6 col-lg-1">
-                            <label class="form-label">CST</label>
-                            <input type="text" class="form-control">
-                        </div>
-                        <div class="col-6 col-lg-2">
-                            <label class="form-label">Excessão</label>
-                            <input type="text" class="form-control">
-                        </div>
-                    </div>
-
-                    <div class="row g-2 mb-3">
-                        <div class="col-6 col-lg-1">
-                            <label class="form-label lbl-red">Vlr.IBPT</label>
-                            <input type="text" class="form-control">
-                        </div>
-                        <div class="col-6 col-lg-2">
-                            <label class="form-label">Validade</label>
-                            {{ form.validade }}
-                        </div>
-                        <div class="col-6 col-lg-1">
-                            <label class="form-label">IPI</label>
-                            <input type="text" class="form-control">
-                        </div>
-                        <div class="col-6 col-lg-1">
-                            <label class="form-label lbl-red">C.F.O.P.</label>
-                            <input type="text" class="form-control text-danger fw-bold" value="5405">
-                        </div>
-                        <div class="col-6 col-lg-1">
-                            <label class="form-label">Índice Depto</label>
-                            <input type="text" class="form-control">
-                        </div>
-                        <div class="col-6 col-lg-2">
-                            <label class="form-label">Custo Médio</label>
-                            <input type="text" class="form-control">
-                        </div>
-                        <div class="col-12 col-lg-4 d-flex align-items-end gap-2 justify-content-end">
-                            <button type="button" class="btn btn-secondary btn-sm flex-fill">Tributação 1</button>
-                            <button type="button" class="btn btn-secondary btn-sm flex-fill">Tributação 2</button>
-                        </div>
-                    </div>
-
-                    <div class="row g-2 mb-3">
-                        
-                        <div class="col-12 col-md-4">
-                            <div class="box-tributo shadow-sm">
-                                <div class="box-title">Dados Fiscais 1</div>
-                                <div class="row g-1">
-                                    <div class="col-12"><label class="form-label">Inf. Adicional</label><input type="text" class="form-control"></div>
-                                    <div class="col-12"><label class="form-label">Origem Produto</label><select class="form-select"><option>0 - Nacional</option></select></div>
-                                    <div class="col-6"><label class="form-label lbl-red">CST ICMS</label><input type="text" class="form-control"></div>
-                                    <div class="col-6"><label class="form-label">Cod. ISS</label><input type="text" class="form-control"></div>
-                                    <div class="col-6"><label class="form-label">Cód. IBGE</label><input type="text" class="form-control"></div>
-                                    <div class="col-6"><label class="form-label lbl-red">CSOSN</label><input type="text" class="form-control"></div>
-                                    <div class="col-12"><label class="form-label">Nat. Oper. ISS</label><input type="text" class="form-control"></div>
-                                    <div class="col-6"><label class="form-label">Vlr Base Calc</label><input type="text" class="form-control"></div>
-                                    <div class="col-6"><label class="form-label">Vlr ICMS Retido</label><input type="text" class="form-control"></div>
-                                    <div class="col-12"><label class="form-label">Modalidade Base</label><select class="form-select"><option>MVA</option></select></div>
-                                    <div class="col-4"><label class="form-label">% Redução</label><input type="text" class="form-control"></div>
-                                    <div class="col-8"><label class="form-label">Mod. BC ICMS ST</label><select class="form-select"><option>Tabelado</option></select></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-md-4">
-                            <div class="box-tributo shadow-sm">
-                                <div class="box-title">ICMS / Cálculos</div>
-                                <div class="row g-1">
-                                    <div class="col-6"><label class="form-label">% Margem ICMS</label><input type="text" class="form-control"></div>
-                                    <div class="col-6"><label class="form-label">% BC ICMS</label><input type="text" class="form-control"></div>
-                                    <div class="col-6"><label class="form-label">Vlr Redução BC</label><input type="text" class="form-control"></div>
-                                    <div class="col-6"><label class="form-label">Vlr Aliq ICMS</label><input type="text" class="form-control"></div>
-                                    <div class="col-6"><label class="form-label">Valor ICMS</label><input type="text" class="form-control"></div>
-                                    <div class="col-6"><label class="form-label">Vlr Desonerado</label><input type="text" class="form-control"></div>
-                                    <div class="col-12"><label class="form-label">Motivo Deson.</label><select class="form-select"><option>--</option></select></div>
-                                    <div class="col-6"><label class="form-label">Vlr Crédito</label><input type="text" class="form-control"></div>
-                                    <div class="col-6"><label class="form-label">Aliq. Crédito</label><input type="text" class="form-control"></div>
-                                    <div class="col-12"><label class="form-label fw-bold">Total Tributos</label><input type="text" class="form-control bg-light"></div>
-                                    <div class="col-6"><label class="form-label lbl-red">CST PIS</label><input type="text" class="form-control"></div>
-                                    <div class="col-6"><label class="form-label">Item Serviço</label><input type="text" class="form-control"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-md-4">
-                            <div class="box-tributo shadow-sm">
-                                <div class="box-title">PIS / COFINS</div>
-                                <div class="row g-1">
-                                    <div class="col-4"><label class="form-label">Base PIS</label><input type="text" class="form-control"></div>
-                                    <div class="col-4"><label class="form-label">Aliq PIS</label><input type="text" class="form-control"></div>
-                                    <div class="col-4"><label class="form-label">Vlr PIS</label><input type="text" class="form-control"></div>
-                                    
-                                    <div class="col-6"><label class="form-label">Qtd Vend PIS</label><input type="text" class="form-control"></div>
-                                    <div class="col-6"><label class="form-label">Vlr Aliq PIS</label><input type="text" class="form-control"></div>
-                                    
-                                    <div class="col-12 mt-1 border-top pt-1"><label class="form-label lbl-red">CST COFINS</label><input type="text" class="form-control"></div>
-                                    
-                                    <div class="col-4"><label class="form-label">Base COF</label><input type="text" class="form-control"></div>
-                                    <div class="col-4"><label class="form-label">Aliq COF</label><input type="text" class="form-control"></div>
-                                    <div class="col-4"><label class="form-label">Vlr COF</label><input type="text" class="form-control"></div>
-                                    
-                                    <div class="col-6"><label class="form-label">Qtd Vend COF</label><input type="text" class="form-control"></div>
-                                    <div class="col-6"><label class="form-label">Vlr Aliq COF</label><input type="text" class="form-control"></div>
-                                    
-                                    <div class="col-12 mt-1"><label class="form-label">Incentivo</label><select class="form-select"><option>Não</option></select></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="grid-container table-responsive">
-                        <table class="table table-bordered table-sm mb-0 table-striped">
-                            <thead class="grid-header">
-                                <tr>
-                                    <th>CODIGODEBARRA</th>
-                                    <th>GRUPO</th>
-                                    <th>DESCRICAO</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for prod in produtos %}
-                                <tr><td>{{ prod.codigodebarra }}</td><td>{{ prod.grupo }}</td><td>{{ prod.descricao }}</td></tr>
-                                {% empty %}
-                                <tr><td>&nbsp;</td><td></td><td></td></tr>
-                                <tr><td>&nbsp;</td><td></td><td></td></tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="spacer-bottom"></div>
                 </div>
 
+                <div class="section-card">
+                    <div class="section-title"><i class="bi bi-tags"></i> Precificação e Estoque</div>
+                    <div class="row g-3">
+                        <div class="col-12 col-md-2"><label class="form-label">Custo (R$)</label>{{ form.precocusto }}</div>
+                        <div class="col-12 col-md-2"><label class="form-label">Margem de Lucro %</label><input type="text" class="form-control"></div>
+                        <div class="col-12 col-md-2"><label class="form-label fw-bold text-primary">Preço Venda</label>{{ form.precovenda }}</div>
+                        <div class="col-12 col-md-2"><label class="form-label">Lucro Real</label><input type="text" class="form-control" disabled></div>
+                        <div class="col-12 col-md-2"><label class="form-label">Preço Venda 2</label><input type="text" class="form-control"></div>
+                        <div class="col-12 col-md-2"><label class="form-label">Comissão</label><input type="text" class="form-control"></div>
+                        
+                        <div class="col-12 col-md-2 mt-4"><label class="form-label">Estoque Atual</label>{{ form.estoqueatual }}</div>
+                        <div class="col-12 col-md-2 mt-4"><label class="form-label">Estoque Mínimo</label>{{ form.estoqueminimo }}</div>
+                        <div class="col-12 col-md-2 mt-4"><label class="form-label">Validade</label>{{ form.validade }}</div>
+                    </div>
+                </div>
+
+                <div class="section-card">
+                    <div class="section-title"><i class="bi bi-receipt"></i> Fiscal Básico</div>
+                    <div class="row g-3">
+                        <div class="col-12 col-md-3"><label class="form-label">NCM / Class. Fiscal</label>{{ form.ncm }}</div>
+                        <div class="col-12 col-md-2"><label class="form-label lbl-red">C.F.O.P.</label>{{ form.cfop }}</div>
+                        <div class="col-12 col-md-2"><label class="form-label">Cód. Alíquota</label>{{ form.codigoaliquota }}</div>
+                        <div class="col-12 col-md-1"><label class="form-label">CST</label>{{ form.cst }}</div>
+                        <div class="col-12 col-md-2"><label class="form-label lbl-red">Vlr. IBPT</label>{{ form.ibpt }}</div>
+                        <div class="col-12 col-md-2"><label class="form-label">Custo Médio</label>{{ form.customedio }}</div>
+                    </div>
+                </div>
+
+                <div class="accordion mb-4" id="accordionTributos">
+                    <div class="accordion-item bg-transparent">
+                        <h2 class="accordion-header" id="headingTributos">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTributos" aria-expanded="false" aria-controls="collapseTributos">
+                                <i class="bi bi-calculator me-2"></i> Tributação Avançada (ICMS, PIS, COFINS)
+                            </button>
+                        </h2>
+                        <div id="collapseTributos" class="accordion-collapse collapse" aria-labelledby="headingTributos" data-bs-parent="#accordionTributos">
+                            <div class="accordion-body bg-white">
+                                <div class="row g-4 pt-2">
+                                    
+                                    <div class="col-md-4 border-end">
+                                        <h6 class="text-secondary fw-bold mb-3">Dados Fiscais / ICMS</h6>
+                                        <div class="row g-2">
+                                            <div class="col-12"><label class="form-label">Inf. Adicional</label>{{ form.infadicional }}</div>
+                                            <div class="col-12"><label class="form-label">Origem Produto</label>{{ form.origemproduto }}</div>
+                                            <div class="col-6"><label class="form-label lbl-red">CST ICMS</label>{{ form.csticms }}</div>
+                                            <div class="col-6"><label class="form-label">Cód. ISS</label>{{ form.codiss }}</div>
+                                            <div class="col-6"><label class="form-label">Cód. IBGE</label>{{ form.codigoibge }}</div>
+                                            <div class="col-6"><label class="form-label lbl-red">CSOSN</label>{{ form.csosn }}</div>
+                                            <div class="col-12"><label class="form-label">Nat. Oper. ISS</label>{{ form.natoperiss }}</div>
+                                            <div class="col-6"><label class="form-label">Vlr BC Simples</label>{{ form.valorbasecalcsimples }}</div>
+                                            <div class="col-6"><label class="form-label">Vlr ICMS Ret. Simples</label>{{ form.valoricmsretidosimples }}</div>
+                                            <div class="col-12"><label class="form-label">Modalidade Base Calc</label>{{ form.modalidadebasecalculo }}</div>
+                                            <div class="col-4"><label class="form-label">% Redução</label>{{ form.percentreducaobase }}</div>
+                                            <div class="col-8"><label class="form-label">Mod. Det. BC ICMS ST</label>{{ form.moddedetdabcdoicmsst }}</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 border-end">
+                                        <h6 class="text-secondary fw-bold mb-3">Cálculo ICMS</h6>
+                                        <div class="row g-2">
+                                            <div class="col-6"><label class="form-label">% Margem ICMS</label>{{ form.percentualmargemicms }}</div>
+                                            <div class="col-6"><label class="form-label">% BC ICMS</label>{{ form.percentualbcicms }}</div>
+                                            <div class="col-6"><label class="form-label">Vlr Redução BC</label>{{ form.valorreducaobcicms }}</div>
+                                            <div class="col-6"><label class="form-label">Vlr Alíquota ICMS</label>{{ form.valoraliquotaicms }}</div>
+                                            <div class="col-6"><label class="form-label">Valor ICMS</label>{{ form.valoricms }}</div>
+                                            <div class="col-6"><label class="form-label">Vlr Desonerado</label>{{ form.valoricmsdesonerado }}</div>
+                                            <div class="col-12"><label class="form-label">Motivo Desoneração</label>{{ form.motivodesoneracaoicms }}</div>
+                                            <div class="col-6"><label class="form-label">Vlr Crédito ICMS</label>{{ form.valorcreditoicms }}</div>
+                                            <div class="col-6"><label class="form-label">Alíq. Calc. Crédito</label>{{ form.aliquotacalculocredito }}</div>
+                                            <div class="col-12"><label class="form-label fw-bold">Vlr Total Tributos</label>{{ form.valortotaltributos }}</div>
+                                            <div class="col-6"><label class="form-label lbl-red">CST PIS</label>{{ form.cstpis }}</div>
+                                            <div class="col-6"><label class="form-label">Item Lista Serviço</label>{{ form.itemlistaservico }}</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <h6 class="text-secondary fw-bold mb-3">PIS / COFINS</h6>
+                                        <div class="row g-2">
+                                            <div class="col-4"><label class="form-label">Base PIS</label>{{ form.basecalculopis }}</div>
+                                            <div class="col-4"><label class="form-label">Alíq PIS</label>{{ form.aliquotapis }}</div>
+                                            <div class="col-4"><label class="form-label">Vlr PIS</label>{{ form.valorpis }}</div>
+                                            <div class="col-6"><label class="form-label">Qtd Vend. PIS</label>{{ form.quantvendidapis }}</div>
+                                            <div class="col-6"><label class="form-label">Vlr Alíq PIS</label>{{ form.valoraliquotapis }}</div>
+                                            
+                                            <div class="col-12 border-top mt-3 pt-2"><label class="form-label lbl-red">CST COFINS</label>{{ form.cstcofins }}</div>
+                                            
+                                            <div class="col-4"><label class="form-label">Base COF</label>{{ form.basecalculocofins }}</div>
+                                            <div class="col-4"><label class="form-label">Alíq COF</label>{{ form.aliquotacofins }}</div>
+                                            <div class="col-4"><label class="form-label">Vlr COF</label>{{ form.valorcofins }}</div>
+                                            <div class="col-6"><label class="form-label">Qtd Vend. COF</label>{{ form.quantvendidacofins }}</div>
+                                            <div class="col-6"><label class="form-label">Vlr Alíq COF</label>{{ form.valoraliquotacofins }}</div>
+                                            
+                                            <div class="col-12 mt-2"><label class="form-label">Ind. Incentivo Fiscal</label>{{ form.indincentivofiscal }}</div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="spacer-bottom"></div>
+
                 <div class="toolbar-footer">
-                    <button type="button" class="btn btn-light btn-sm border" id="btn-magic-fill" onclick="preencherAutomaticamente()">
-                        <i class="bi bi-plus-circle-fill text-success"></i> Novo 
+                    <button type="button" class="btn btn-light border text-success" id="btn-magic-fill" onclick="preencherAutomaticamente()">
+                        <i class="bi bi-magic"></i> Novo (Auto)
                     </button>
-                 
-                    <button type="button" class="btn btn-light btn-sm border" onclick="limparFormulario()" title="Limpar tela">
-                        <i class="bi bi-x-circle-fill text-danger"></i> Cancelar
+                    <button type="reset" class="btn btn-light border text-danger">
+                        <i class="bi bi-x-circle"></i> Limpar
                     </button>
-                
-                    <button type="submit" class="btn btn-light btn-sm border fw-bold">
-                        <i class="bi bi-floppy-fill text-primary"></i> Salvar
-                    </button>
-
-                    <button type="button" class="btn btn-light btn-sm border" onclick="limparFormulario()" title="Limpar tela" >
-                        <i class="bi bi-trash-fill text-danger"></i> Excluir
-                    </button>
-
-                    <button type="button" class="btn btn-light btn-sm border">
-                        <i class="bi bi-pencil-fill text-warning"></i> Editar
+                    <button type="submit" class="btn btn-primary px-4 shadow-sm">
+                        <i class="bi bi-save"></i> Salvar Produto
                     </button>
                 </div>
             </form>
         </div>
 
         <div class="tab-pane fade {% if active_tab == 'busca' %}show active{% endif %}" id="busca-pane" role="tabpanel">
-            <div class="painel-principal shadow-sm mt-0 border-top-0">
-                
-                <form method="get" class="mb-3 p-3 bg-white rounded border">
-                    <div class="row align-items-center g-2">
-                        <div class="col-12 col-md-3 border-end">
-                            <span class="fw-bold d-block mb-1 text-secondary small">Filtrar:</span>
-                            <div class="d-flex gap-3 d-md-block">
+            <div class="section-card mt-1">
+                <form method="get" class="mb-4">
+                    <div class="row align-items-end g-3">
+                        <div class="col-12 col-md-3">
+                            <label class="form-label text-secondary">Filtrar por:</label>
+                            <div class="d-flex gap-3 mt-1">
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="tipo_busca" id="radioDesc" value="descricao" {% if request.GET.tipo_busca != 'codigo' %}checked{% endif %}>
-                                    <label class="form-check-label small" for="radioDesc">Descrição</label>
+                                    <label class="form-check-label" for="radioDesc">Descrição</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="tipo_busca" id="radioCod" value="codigo" {% if request.GET.tipo_busca == 'codigo' %}checked{% endif %}>
-                                    <label class="form-check-label small" for="radioCod">Cód. Barra</label>
+                                    <label class="form-check-label" for="radioCod">Cód. Barra</label>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 col-md-9">
-                            <label class="form-label text-muted small">Digite sua busca:</label>
-                            <div class="input-group">
-                                <input type="text" name="q" class="form-control" placeholder="Busque por nome ou código..." value="{{ request.GET.q|default:'' }}">
-                                <button type="submit" class="btn btn-primary btn-sm px-4">🔍 Pesquisar</button>
-                                {% if request.GET.q %}
-                                    <a href="{% url 'cadastro' %}?tab=busca" class="btn btn-outline-secondary btn-sm">Limpar</a>
-                                {% endif %}
-                            </div>
+                        <div class="col-12 col-md-7">
+                            <label class="form-label text-secondary">Digite sua busca:</label>
+                            <input type="text" name="q" class="form-control" placeholder="Busque por nome ou código..." value="{{ request.GET.q|default:'' }}">
+                        </div>
+                        <div class="col-12 col-md-2">
+                            <button type="submit" class="btn btn-primary w-100"><i class="bi bi-search"></i> Buscar</button>
                         </div>
                     </div>
                 </form>
-                
-                <h6 class="text-secondary ms-1 mb-2 small fw-bold">
+
+                <h6 class="text-secondary mb-3 fw-bold">
                     {% if request.GET.q %}
                         <i class="bi bi-search"></i> Resultados da pesquisa:
+                        <a href="{% url 'cadastro' %}?tab=busca" class="text-decoration-none ms-2 small text-danger">(Limpar)</a>
                     {% else %}
                         <i class="bi bi-clock-history"></i> Últimos cadastros realizados:
                     {% endif %}
                 </h6>
 
                 {% if produtos %}
-                <div class="grid-container table-responsive" style="height: 400px;">
-                    <table class="table table-bordered table-hover table-sm mb-0">
+                <div class="grid-container table-responsive">
+                    <table class="table table-hover align-middle mb-0">
                         <thead class="grid-header">
                             <tr>
                                 <th>CÓDIGO</th>
                                 <th>DESCRIÇÃO</th>
                                 <th>PREÇO</th>
                                 <th>ESTOQUE</th>
+                                <th class="text-center">AÇÕES</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for prod in produtos %}
                             <tr>
-                                <td>{{ prod.codigodebarra }}</td>
-                                <td>{{ prod.descricao }}</td>
-                                <td>R$ {{ prod.precovenda }}</td>
-                                <td>{{ prod.estoqueatual }}</td>
+                                <td class="font-monospace text-muted">{{ prod.codigodebarra }}</td>
+                                <td class="fw-bold">{{ prod.descricao }}</td>
+                                <td class="text-success fw-bold">R$ {{ prod.precovenda }}</td>
+                                <td>
+                                    <span class="badge {% if prod.estoqueatual > 0 %}bg-primary{% else %}bg-danger{% endif %} rounded-pill">
+                                        {{ prod.estoqueatual }} UN
+                                    </span>
+                                </td>
+                                <td class="text-center">
+                                    {% if prod.indice %}
+                                        <a href="{% url 'editar_produto' prod.indice %}" class="btn btn-sm btn-light border text-primary" title="Editar">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        
+                                        <a href="{% url 'excluir_produto' prod.indice %}" 
+                                           class="btn btn-sm btn-light border text-danger" 
+                                           title="Excluir"
+                                           onclick="return confirm('ATENÇÃO: Tem certeza que deseja excluir o produto {{ prod.descricao }}?');">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    {% else %}
+                                        <span class="badge bg-warning text-dark"><i class="bi bi-tools"></i> Consertando...</span>
+                                    {% endif %}
+                                </td>
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
                 {% else %}
-                    <div class="alert alert-warning text-center small mt-3">
-                        Nenhum produto encontrado no banco de dados.
-                    </div>
+                    <div class="alert alert-warning text-center mt-3">Nenhum produto encontrado.</div>
                 {% endif %}
             </div>
         </div>
 
-    </div> 
+    </div>
 </div>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function preencherAutomaticamente() {
+        // 1. DADOS BASE
+        const randomId = Math.floor(Math.random() * 99999);
+        const randomCode = "789" + Math.floor(Math.random() * 1000000000);
+        
+        try {
+            document.querySelector('[name="codigodebarra"]').value = randomCode;
+            document.querySelector('[name="descricao"]').value = `PRODUTO DE TESTE AUTOMÁTICO #${randomId}`;
+            document.querySelector('[name="precocusto"]').value = "50.00";
+            document.querySelector('[name="precovenda"]').value = "120.00";
+            document.querySelector('[name="estoqueatual"]').value = "100";
+            document.querySelector('[name="estoqueminimo"]').value = "10";
+            
+            const campoValidade = document.querySelector('[name="validade"]');
+            if (campoValidade) {
+                campoValidade.value = new Date().toISOString().split('T')[0];
+            }
+        } catch (e) {
+            console.log("Aviso: Campo principal não encontrado.");
+        }
 
+        // 2. VARREDURA CONECTADA AO MODELS.PY
+        // Pega todos os inputs ativos gerados pelo Django
+        const todosInputs = document.querySelectorAll('input[type="text"]:not([readonly]):not([disabled])');
+        
+        todosInputs.forEach(input => {
+            if (input.value === "") {
+                const nomeBanco = input.name; // Nome exato da coluna no seu models.py!
+                
+                // Campos com max_length=1
+                if (nomeBanco === 'origemproduto' || nomeBanco === 'modalidadebasecalculo' || nomeBanco === 'moddedetdabcdoicmsst' || nomeBanco === 'indincentivofiscal') {
+                    input.value = "0";
+                } 
+                // Campos com max_length=2
+                else if (nomeBanco === 'codigoaliquota' || nomeBanco === 'csticms' || nomeBanco === 'cstpis' || nomeBanco === 'cstcofins' || nomeBanco === 'motivodesoneracaoicms') {
+                    input.value = "00";
+                } 
+                // Campos com max_length=3
+                else if (nomeBanco === 'cst' || nomeBanco === 'csosn') {
+                    input.value = "102";
+                }
+                // Campos com max_length=4 (As Alíquotas e Porcentagens)
+                // Colocamos "18.0" que tem exatamente 4 caracteres
+                else if (nomeBanco.includes('aliquota') || nomeBanco.includes('percent')) {
+                    input.value = "18.0";
+                } 
+                // Específicos
+                else if (nomeBanco === 'cfop') {
+                    input.value = "5405";
+                } 
+                else if (nomeBanco === 'ncm') {
+                    input.value = "22021000";
+                } 
+                // Restante (Valores, Bases, etc)
+                else {
+                    input.value = "0";
+                }
+            }
+        });
 
-<script src="{% static 'js/scripts.js' %}"></script>
-
-
+        // Efeito Visual
+        const tributosCollapse = document.getElementById('collapseTributos');
+        if (tributosCollapse && !tributosCollapse.classList.contains('show')) {
+            const bsCollapse = new bootstrap.Collapse(tributosCollapse, { toggle: false });
+            bsCollapse.show();
+        }
+    }
+</script>
 {% endblock %}
