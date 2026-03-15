@@ -1,0 +1,93 @@
+body {
+        background-color: #f4f6f8; /* Cinza gelo do Tema 3 */
+        font-family: 'Roboto', 'Segoe UI', sans-serif;
+        overflow-x: hidden;
+}
+
+/* --- MENU LATERAL (SIDEBAR) --- */
+.sidebar {
+        width: 260px;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: #ffffff;
+        box-shadow: 2px 0 12px rgba(145, 158, 171, 0.15);
+        z-index: 1040;
+        padding-top: 20px;
+        transition: transform 0.3s ease;
+}
+
+.sidebar-brand {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #1a73e8; /* Azul Google */
+        text-align: center;
+        margin-bottom: 30px;
+        display: block;
+        text-decoration: none;
+}
+
+.nav-sidebar .nav-link {
+        color: #637381;
+        font-weight: 600;
+        padding: 12px 20px;
+        margin: 4px 15px;
+        border-radius: 8px;
+        transition: all 0.2s;
+}
+
+.nav-sidebar .nav-link:hover {
+        background-color: #f4f6f8;
+        color: #212b36;
+}
+
+.nav-sidebar .nav-link.active {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+}
+
+.nav-sidebar i { margin-right: 10px; font-size: 1.1rem; }
+
+/* --- ÁREA PRINCIPAL --- */
+.main-content {
+        margin-left: 260px; /* Espaço da sidebar no PC */
+        padding: 20px;
+        min-height: 100vh;
+        transition: margin-left 0.3s ease;
+}
+
+/* Barra superior aparecerá apenas no celular */
+.mobile-header {
+        display: none;
+        background-color: #ffffff;
+        box-shadow: 0 2px 8px rgba(145, 158, 171, 0.1);
+        padding: 10px 20px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        align-items: center;
+        justify-content: space-between;
+}
+
+/* --- RESPONSIVIDADE (CELULARES E TABLETS) --- */
+@media (max-width: 991.98px) {
+        .sidebar {
+        transform: translateX(-100%); /* Esconde a sidebar na esquerda */
+        }
+        .sidebar.show {
+        transform: translateX(0); /* Classe ativada pelo JS para mostrar */
+        }
+        .main-content {
+        margin-left: 0; /* Ocupa a tela toda */
+        padding: 10px;
+        }
+        .mobile-header {
+        display: flex; /* Mostra o menu hambúrguer */
+        }
+        /* Fundo escuro quando o menu abrir no celular */
+        .sidebar-overlay {
+        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+        background: rgba(0,0,0,0.5); z-index: 1030; display: none;
+        }
+        .sidebar-overlay.show { display: block; }
+}

@@ -1,8 +1,17 @@
 {% extends 'core/base.html' %}
-{% load static %}
-{% block content %}
 
-<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+{% block content %}
+<style>
+    /* Estilo para a "janela mágica" ficar perfeita na tela */
+    .iframe-container {
+        width: 100%;
+        height: 85vh; /* Ocupa 85% da altura da tela */
+        border-radius: 12px;
+        box-shadow: 0 4px 24px rgba(145, 158, 171, 0.15);
+        border: none;
+        background-color: #ffffff;
+    }
+</style>
 
 <div class="container-fluid mt-3">
     <h4 class="mb-4 text-dark fw-bold"><i class="bi bi-graph-up-arrow text-primary"></i> Dashboard</h4>
